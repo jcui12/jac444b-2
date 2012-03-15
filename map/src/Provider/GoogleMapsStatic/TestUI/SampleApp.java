@@ -651,6 +651,7 @@ private void initComponents() {
 			jcmbcity.setSelectedIndex(0);
 			jcmbcity.addItemListener(new ItemListener(){
 				public void itemStateChanged(ItemEvent e) { 
+					
 					switch(getk()){
 					 case 1:
 						 ttfLat.setText("-75.42");
