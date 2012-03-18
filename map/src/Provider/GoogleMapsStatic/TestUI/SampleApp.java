@@ -1,6 +1,6 @@
 /*
- * Created by JFormDesigner on Mon Apr 21 12:50:34 EDT 2008
- */
+* Created by JFormDesigner on Mon Apr 21 12:50:34 EDT 2008
+*/
 
 package Provider.GoogleMapsStatic.TestUI;
 
@@ -18,13 +18,18 @@ import org.apache.commons.httpclient.methods.*;
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.*;
+import java.io.*;
 import java.math.BigDecimal;
 import java.text.*;
 import java.util.concurrent.*;
+
 
 /** @author nazmul idris */
 public class SampleApp extends JFrame {
@@ -38,8 +43,7 @@ private BufferedImage _img;
 /** this might be null. holds the text in case image doesn't display */
 private String _respStr;
 
-//-------------------add countries-------------------------
-private String[] countries = {"Canada","China","USA"};
+
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 // main method...
@@ -87,7 +91,7 @@ private void _setupTask() {
       // set the license key
       MapLookup.setLicenseKey(ttfLicense.getText());
       // get the uri for the static map
-      String uri = MapLookup.getMap(Double.parseDouble(ttfLat.getText()),
+      String uri = MapLookup.getMap(Double.parseDouble((String) ttfLat.getValue()),
                                     Double.parseDouble(ttfLon.getText()),
                                     Integer.parseInt(ttfSizeW.getText()),
                                     Integer.parseInt(ttfSizeH.getText()),
@@ -218,6 +222,8 @@ private void _displayImgInFrame() {
     public void mouseExited(MouseEvent e) { }
   });
 
+
+  
   frame.setContentPane(imgLbl);
   frame.pack();
 
@@ -231,7 +237,7 @@ private void _displayRespStrInFrame() {
   GUIUtils.setAppIcon(frame, "69.png");
   frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-  JTextArea response = new JTextArea(_respStr, 25, 80); 
+  JTextArea response = new JTextArea(_respStr, 25, 80);
   response.addMouseListener(new MouseListener() {
     public void mouseClicked(MouseEvent e) {}
     public void mousePressed(MouseEvent e) { frame.dispose();}
@@ -290,70 +296,45 @@ private void quitProgram() {
 
 //--------------add methods--------------------
 private String addzoom(){
-	 int zoom = Integer.parseInt(ttfZoom.getText())+1; 
-	 return Integer.toString(zoom);
+int zoom = Integer.parseInt(ttfZoom.getText())+1;
+return Integer.toString(zoom);
 }
 
 private String dezoom(){
-	 int zoom = Integer.parseInt(ttfZoom.getText())-1; 
-	 return Integer.toString(zoom);
+int zoom = Integer.parseInt(ttfZoom.getText())-1;
+return Integer.toString(zoom);
 }
 
-private String addlati(){
-	double lati = Double.parseDouble(ttfLat.getText())+0.00001; 
-	BigDecimal la1 = new BigDecimal(Double.toString(lati));
-	double la = la1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue(); 
-	return Double.toString(la);
+/*private String addlati(){
+double lati = Double.parseDouble(ttfLat.getText())+0.00001;
+BigDecimal la1 = new BigDecimal(Double.toString(lati));
+double la = la1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
+return Double.toString(la);
 }
 
 private String delati(){
-	double lati = Double.parseDouble(ttfLat.getText())-0.00001; 
-	BigDecimal la1 = new BigDecimal(Double.toString(lati));
-	double la = la1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue(); 
-	 return Double.toString(la);
-}
+double lati = Double.parseDouble(ttfLat.getText())-0.00001;
+BigDecimal la1 = new BigDecimal(Double.toString(lati));
+double la = la1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
+return Double.toString(la);
+}*/
 
 private String addlong(){
-	double lon = Double.parseDouble(ttfLon.getText())+0.00001; 
-	BigDecimal lo1 = new BigDecimal(Double.toString(lon));
-	double lo = lo1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue(); 
-	 return Double.toString(lo);
+double lon = Double.parseDouble(ttfLon.getText())+0.00001;
+BigDecimal lo1 = new BigDecimal(Double.toString(lon));
+double lo = lo1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
+return Double.toString(lo);
 }
 
 private String delong(){
-	double lon = Double.parseDouble(ttfLon.getText())-0.00001; 
-	BigDecimal lo1 = new BigDecimal(Double.toString(lon));
-	double lo = lo1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue(); 
-	 return Double.toString(lo);
+double lon = Double.parseDouble(ttfLon.getText())-0.00001;
+BigDecimal lo1 = new BigDecimal(Double.toString(lon));
+double lo = lo1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
+return Double.toString(lo);
 }
-
-private int getk(){
-	int k = 0;
-	if (jcmbcity.getSelectedItem().equals("Ottawa"))
-		k=1;
-	/*{
-		ttfLat.setText("-75.42");
-		ttfLon.setText("45.25");
-		}*/
-	else if (jcmbcity.getSelectedItem().equals("Toronto"))
-		k = 2;
-	/*{
-		ttfLat.setText("-79.23");
-		ttfLon.setText("43.39");
-		}*/
-	else if (jcmbcity.getSelectedItem().equals("Vancouver"))
-		k = 3;
-	/*{
-		ttfLat.setText("-123.05");
-		ttfLon.setText("49.14");
-		}*/
-	return k;
-}
-
-
 
 private void initComponents() {
-  // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+  // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents
   // Generated using JFormDesigner non-commercial license
   dialogPane = new JPanel();
   contentPanel = new JPanel();
@@ -361,7 +342,7 @@ private void initComponents() {
   label2 = new JLabel();
   ttfSizeW = new JTextField();
   label4 = new JLabel();
-  ttfLat = new JTextField();
+  ttfLat = new JSpinner();
   btnGetMap = new JButton();
   label3 = new JLabel();
   ttfSizeH = new JTextField();
@@ -387,19 +368,15 @@ private void initComponents() {
   btnDeLong = new JButton();
   btnInZoom = new JButton();
   btnDeZoom = new JButton();
-  btnInLati = new JButton();
-  btnDeLati = new JButton();
-  jcmbcountry = new JComboBox(countries);
+  //btnInLati = new JButton();
+  //btnDeLati = new JButton();
+  labelcity = new JLabel();
+  labelcountry = new JLabel();
   jcmbcity = new JComboBox();
- 
-
- /*latiModel = new SpinnerNumberModel(Integer.parseInt(ttfLat.getText()),
-		 -180,
-		 180,
-          0.01);
- spinnerLati = new JSpinner(latiModel);
- spinnerLong = new JSpinner();
- spinnerzoom = new JSpinner();*/
+  jcmbcountry = new JComboBox();
+  btnSaveLocation = new JButton();
+  fc = new JFileChooser();
+  log = new JTextArea();
   
   //======== this ========
   setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -410,341 +387,426 @@ private void initComponents() {
 
   //======== dialogPane ========
   {
-  	dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12)); 
-  	dialogPane.setOpaque(false);
-  	dialogPane.setLayout(new BorderLayout());
+   dialogPane.setBorder(new EmptyBorder(12, 12, 12, 12));
+   dialogPane.setOpaque(false);
+   dialogPane.setLayout(new BorderLayout());
 
-  	//======== contentPanel ========
-  	{
-  		contentPanel.setOpaque(false);
-  		contentPanel.setLayout(new TableLayout(new double[][] {
-  			{TableLayout.FILL},
-  			{TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED}}));
-  		((TableLayout)contentPanel.getLayout()).setHGap(5); 
-  		((TableLayout)contentPanel.getLayout()).setVGap(5);
+   //======== contentPanel ========
+   {
+   contentPanel.setOpaque(false);
+   contentPanel.setLayout(new TableLayout(new double[][] {
+   {TableLayout.FILL},
+   {TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED}}));
+   ((TableLayout)contentPanel.getLayout()).setHGap(5);
+   ((TableLayout)contentPanel.getLayout()).setVGap(5);
 
-  		//======== panel1 ========
-  		{
-  			panel1.setOpaque(false);
-  			panel1.setBorder(new CompoundBorder(
-  				new TitledBorder("Configure the inputs to Google Static Maps"),
-  				Borders.DLU2_BORDER));
-  			
-  		panel1.setLayout(new TableLayout(new double[][] {
-  				{0.17, 0.17, 0.17, 0.17, 0.05, 0.05,TableLayout.FILL},
-  				{TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED}}));
-  		
-  			((TableLayout)panel1.getLayout()).setHGap(5); 
-  			((TableLayout)panel1.getLayout()).setVGap(5); 
- 
-  			//---- label2 ----
-  			label2.setText("Size Width");
-  			label2.setHorizontalAlignment(SwingConstants.RIGHT);
-  			panel1.add(label2, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- ttfSizeW ----
-  			ttfSizeW.setText("512");
-  			panel1.add(ttfSizeW, new TableLayoutConstraints(1, 0, 1, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- label4 ----
-  			label4.setText("Latitude");
-  			label4.setHorizontalAlignment(SwingConstants.RIGHT);
-  			panel1.add(label4, new TableLayoutConstraints(2, 0, 2, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- ttfLat ----
-  			ttfLat.setText("38.931099");
-  			panel1.add(ttfLat, new TableLayoutConstraints(3, 0, 3, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- btnGetMap ----
-  			btnGetMap.setText("Get Map");
-  			btnGetMap.setHorizontalAlignment(SwingConstants.LEFT);
-  			btnGetMap.setMnemonic('G');
-  			btnGetMap.addActionListener(new ActionListener() {
-  				public void actionPerformed(ActionEvent e) {
-  					startTaskAction();
-  				}
-  			});
-  			panel1.add(btnGetMap, new TableLayoutConstraints(6, 0, 6, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- label3 ----
-  			label3.setText("Size Height");
-  			label3.setHorizontalAlignment(SwingConstants.RIGHT);
-  			panel1.add(label3, new TableLayoutConstraints(0, 1, 0, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- ttfSizeH ----
-  			ttfSizeH.setText("512");
-  			panel1.add(ttfSizeH, new TableLayoutConstraints(1, 1, 1, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- label5 ----
-  			label5.setText("Longitude");
-  			label5.setHorizontalAlignment(SwingConstants.RIGHT);
-  			panel1.add(label5, new TableLayoutConstraints(2, 1, 2, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- ttfLon ----
-  			ttfLon.setText("-77.3489");
-  			panel1.add(ttfLon, new TableLayoutConstraints(3, 1, 3, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- btnQuit ----
-  			btnQuit.setText("Quit");
-  			btnQuit.setMnemonic('Q');
-  			btnQuit.setHorizontalAlignment(SwingConstants.LEFT);
-  			btnQuit.setHorizontalTextPosition(SwingConstants.RIGHT);
-  			btnQuit.addActionListener(new ActionListener() {
-  				public void actionPerformed(ActionEvent e) {
-  					quitProgram();
-  				}
-  			});
-  			panel1.add(btnQuit, new TableLayoutConstraints(6, 1, 6, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- label1 ----
-  			label1.setText("License Key");
-  			label1.setHorizontalAlignment(SwingConstants.RIGHT);
-  			panel1.add(label1, new TableLayoutConstraints(0, 2, 0, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- ttfLicense ----
-  			ttfLicense.setToolTipText("Enter your own URI for a file to download in the background");
-  			panel1.add(ttfLicense, new TableLayoutConstraints(1, 2, 1, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- label6 ----
-  			label6.setText("Zoom");
-  			label6.setHorizontalAlignment(SwingConstants.RIGHT);
-  			panel1.add(label6, new TableLayoutConstraints(2, 2, 2, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-
-  			//---- ttfZoom ----
-  			ttfZoom.setText("14");
-  			panel1.add(ttfZoom, new TableLayoutConstraints(3, 2, 3, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-  		}
-  		contentPanel.add(panel1, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-  		
-  		//-----------------btnInLati------------------
-  		btnInLati.setText("+");
-  		btnInLati.setHorizontalAlignment(SwingConstants.LEFT);
-  		btnInLati.setHorizontalTextPosition(SwingConstants.RIGHT);
-  		btnInLati.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ttfLat.setText(addlati());
-			}
-		});
-  		
-		panel1.add(btnInLati, new TableLayoutConstraints(4,0,4, 0, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
-  		
-		//-----------------btnDeLati-----------------
-		btnDeLati.setText("-");
-		btnDeLati.setHorizontalAlignment(SwingConstants.LEFT);
-		btnDeLati.setHorizontalTextPosition(SwingConstants.RIGHT);
-		btnDeLati.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ttfLat.setText(delati());
-			}
-		});
-		panel1.add(btnDeLati, new TableLayoutConstraints(5,0,5,0, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
-
-  			//------------btnInLong---------------
-  			btnInLong.setText("+");
-  			btnInLong.setHorizontalAlignment(SwingConstants.LEFT);
-  			btnInLong.setHorizontalTextPosition(SwingConstants.RIGHT);
-  			btnInLong.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ttfLon.setText(addlong());
-				}
-			});
-			panel1.add(btnInLong, new TableLayoutConstraints(4,1,4, 1, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
-
-			//------------btnDeLong---------------
-			btnDeLong.setText("-");
-			btnDeLong.setHorizontalAlignment(SwingConstants.LEFT);
-			btnDeLong.setHorizontalTextPosition(SwingConstants.RIGHT);
-			btnDeLong.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ttfLon.setText(delong());
-				}
-			});
-			panel1.add(btnDeLong, new TableLayoutConstraints(5,1,5, 1, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
-
-			//------------btnInZoom---------------
-			btnInZoom.setText("+");		
-			btnInZoom.setHorizontalAlignment(SwingConstants.LEFT);
-			btnInZoom.setHorizontalTextPosition(SwingConstants.RIGHT);
-			btnInZoom.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ttfZoom.setText(addzoom());
-				}
-			});
-			panel1.add(btnInZoom, new TableLayoutConstraints(4,2,4, 2, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
-			
-			//------------btnDeZoom---------------
-			btnDeZoom.setText("-");
-			
-			btnDeZoom.setHorizontalAlignment(SwingConstants.LEFT);
-			btnDeZoom.setHorizontalTextPosition(SwingConstants.RIGHT);
-			btnDeZoom.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ttfZoom.setText(dezoom());
-				}
-			});
-			panel1.add(btnDeZoom, new TableLayoutConstraints(5,2,5, 2, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
-			
+   //======== panel1 ========
+   {
+   panel1.setOpaque(false);
+   panel1.setBorder(new CompoundBorder(
+   new TitledBorder("Configure the inputs to Google Static Maps"),
+   Borders.DLU2_BORDER));
   
-  	 
-			//-------------jcmbcountry--------------
-			jcmbcountry.setEditable(false);
-			jcmbcountry.setMaximumRowCount(5);
-			jcmbcountry.insertItemAt("select country", 0);
-			jcmbcountry.setSelectedIndex(0);
-		 
-		    jcmbcountry.addItemListener(new ItemListener(){
-		    	public void itemStateChanged(ItemEvent e) {
-		    		
-					 String[] canada = {"select city","Ottawa","Toronto","Vancouver"};
-				     String[] china = {"select city","Beijing","Shanghai","Hongkong"};
-				     String[] usa = {"select city","Washington D.C.","New York","Los Angeles"};
+   panel1.setLayout(new TableLayout(new double[][] {
+   {0.17, 0.17, 0.17, 0.17, 0.05, 0.05,TableLayout.FILL},
+   {TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED, TableLayout.PREFERRED}}));
+  
+   ((TableLayout)panel1.getLayout()).setHGap(5);
+   ((TableLayout)panel1.getLayout()).setVGap(5);
+ 
+   //---- label2 ----
+   label2.setText("Size Width");
+   label2.setHorizontalAlignment(SwingConstants.RIGHT);
+   panel1.add(label2, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-				     if (e.getSource()==(jcmbcountry)) {
-				    	
-				            /*if (jcmbcountry.getSelectedItem().equals("Select country")) {
-				            	jcmbcity.setEnabled(false);
-				            }
-				            else*/ if (jcmbcountry.getSelectedItem().equals("Canada")) {	  
-				            	jcmbcity.setEnabled(true);
-				            	jcmbcity.removeAllItems();
-				            	for (int i = 0; i < canada.length; i++) {
-				            		jcmbcity.addItem(canada[i]);
-				            		}
-				            
-				            	
-				            	/*if (jcmbcity.getSelectedItem().equals("Select city")) {
-				            		jcmbcity.setEnabled(false);
-				            		ttfLat.setText(null);
-				            		ttfLon.setText(null);
-				            		}
-				            	else */
-				            	
-				        		
-				        			
-				        			
-				        			
-				            } else if (jcmbcountry.getSelectedItem().equals("China")) {
-				            	jcmbcity.setEnabled(true);
-				            	jcmbcity.removeAllItems();
-				                    for (int i = 0; i < china.length; i++) {
-				                    	jcmbcity.removeItem(china[i]);
-				                    	jcmbcity.addItem(china[i]);
-				                    }
-				            } else if (jcmbcountry.getSelectedItem().equals("USA")) {
-				            	jcmbcity.setEnabled(true);
-				            	jcmbcity.removeAllItems();
-				                    for (int i = 0; i < usa.length; i++) {
-				                    	jcmbcity.addItem(usa[i]);
-				                    }
-				            }
-				    }
-		    	}
-		    	
-		    });
-			panel1.add(jcmbcountry, new TableLayoutConstraints(0,3,0, 3, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
+   //---- ttfSizeW ----
+   ttfSizeW.setText("512");
+   panel1.add(ttfSizeW, new TableLayoutConstraints(1, 0, 1, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-			//-------------jcmbcity--------------
-			
-			jcmbcity.setEditable(false);
-			jcmbcity.setMaximumRowCount(5);
-			jcmbcity.insertItemAt("select city", 0);
-			jcmbcity.setSelectedIndex(0);
-			jcmbcity.addItemListener(new ItemListener(){
-				public void itemStateChanged(ItemEvent e) { 
-					
-					switch(getk()){
-					 case 1:
-						 ttfLat.setText("-75.42");
-						 ttfLon.setText("45.25");
-						 break;
-					 case 2:
-			        	 ttfLat.setText("-79.23");
-			             ttfLon.setText("43.39");
-			             break;
-			         case 3:
-			        	 ttfLat.setText("-123.05");
-			             ttfLon.setText("49.14");
-			             break;
-			         }
-				}
-			
-			});
-			panel1.add(jcmbcity, new TableLayoutConstraints(1,3,1, 3, 
-					TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
-		
-		//======== scrollPane1 ========
-  		{
-  			scrollPane1.setBorder(new TitledBorder("System.out - displays all status and progress messages, etc."));
-  			scrollPane1.setOpaque(false);
+   //---- label4 ----
+   label4.setText("Latitude");
+   label4.setHorizontalAlignment(SwingConstants.RIGHT);
+   panel1.add(label4, new TableLayoutConstraints(2, 0, 2, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-  			//---- ttaStatus ----
-  			ttaStatus.setBorder(Borders.createEmptyBorder("1dlu, 1dlu, 1dlu, 1dlu"));
-  			ttaStatus.setToolTipText("<html>Task progress updates (messages) are displayed here,<br>along with any other output generated by the Task.<html>");
-  			scrollPane1.setViewportView(ttaStatus);
-  		}
-  		contentPanel.add(scrollPane1, new TableLayoutConstraints(0, 1, 0, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+   //---- ttfLat ----
+   ttfLat.setValue(38.931099);
+   panel1.add(ttfLat, new TableLayoutConstraints(3, 0, 3, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-  		//======== panel2 ========
-  		{
-  			panel2.setOpaque(false);
-  			panel2.setBorder(new CompoundBorder(
-  				new TitledBorder("Status - control progress reporting"),
-  				Borders.DLU2_BORDER));
-  			panel2.setLayout(new TableLayout(new double[][] {
-  				{0.45, TableLayout.FILL, 0.45},
-  				{TableLayout.PREFERRED, TableLayout.PREFERRED}}));
-  			((TableLayout)panel2.getLayout()).setHGap(5);
-  			((TableLayout)panel2.getLayout()).setVGap(5);
+   //---- btnGetMap ----
+   btnGetMap.setText("Get Map");
+   btnGetMap.setHorizontalAlignment(SwingConstants.LEFT);
+   btnGetMap.setMnemonic('G');
+   btnGetMap.addActionListener(new ActionListener() {
+   public void actionPerformed(ActionEvent e) {
+   startTaskAction();
+   }
+   });
+   panel1.add(btnGetMap, new TableLayoutConstraints(6, 0, 6, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-  			//======== panel3 ========
-  			{
-  				panel3.setOpaque(false);
-  				panel3.setLayout(new GridLayout(1, 2));
+   //---- label3 ----
+   label3.setText("Size Height");
+   label3.setHorizontalAlignment(SwingConstants.RIGHT);
+   panel1.add(label3, new TableLayoutConstraints(0, 1, 0, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-  				//---- checkboxRecvStatus ----
-  				checkboxRecvStatus.setText("Enable \"Recieve\"");
-  				checkboxRecvStatus.setOpaque(false);
-  				checkboxRecvStatus.setToolTipText("Task will fire \"send\" status updates");
-  				checkboxRecvStatus.setSelected(true);
-  				panel3.add(checkboxRecvStatus);
+   //---- ttfSizeH ----
+   ttfSizeH.setText("512");
+   panel1.add(ttfSizeH, new TableLayoutConstraints(1, 1, 1, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-  				//---- checkboxSendStatus ----
-  				checkboxSendStatus.setText("Enable \"Send\"");
-  				checkboxSendStatus.setOpaque(false);
-  				checkboxSendStatus.setToolTipText("Task will fire \"recieve\" status updates");
-  				panel3.add(checkboxSendStatus);
-  			}
-  			panel2.add(panel3, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+   //---- label5 ----
+   label5.setText("Longitude");
+   label5.setHorizontalAlignment(SwingConstants.RIGHT);
+   panel1.add(label5, new TableLayoutConstraints(2, 1, 2, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-  			//---- ttfProgressMsg ----
-  			ttfProgressMsg.setText("Loading map from Google Static Maps");
-  			ttfProgressMsg.setToolTipText("Set the task progress message here");
-  			panel2.add(ttfProgressMsg, new TableLayoutConstraints(2, 0, 2, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+   //---- ttfLon ----
+   ttfLon.setText("-77.3489");
+   panel1.add(ttfLon, new TableLayoutConstraints(3, 1, 3, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-  			//---- progressBar ----
-  			progressBar.setStringPainted(true);
-  			progressBar.setString("progress %");
-  			progressBar.setToolTipText("% progress is displayed here");
-  			panel2.add(progressBar, new TableLayoutConstraints(0, 1, 0, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+   //---- btnQuit ----
+   btnQuit.setText("Quit");
+   btnQuit.setMnemonic('Q');
+   btnQuit.setHorizontalAlignment(SwingConstants.LEFT);
+   btnQuit.setHorizontalTextPosition(SwingConstants.RIGHT);
+   btnQuit.addActionListener(new ActionListener() {
+   public void actionPerformed(ActionEvent e) {
+   quitProgram();
+   }
+   });
+   panel1.add(btnQuit, new TableLayoutConstraints(6, 1, 6, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-  			//---- lblProgressStatus ----
-  			lblProgressStatus.setText("task status listener");
-  			lblProgressStatus.setHorizontalTextPosition(SwingConstants.LEFT);
-  			lblProgressStatus.setHorizontalAlignment(SwingConstants.LEFT);
-  			lblProgressStatus.setToolTipText("Task status messages are displayed here when the task runs");
-  			panel2.add(lblProgressStatus, new TableLayoutConstraints(2, 1, 2, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-  		}
-  		contentPanel.add(panel2, new TableLayoutConstraints(0, 2, 0, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
-  	}
-  	dialogPane.add(contentPanel, BorderLayout.CENTER);
+   //---- label1 ----
+   label1.setText("License Key");
+   label1.setHorizontalAlignment(SwingConstants.RIGHT);
+   panel1.add(label1, new TableLayoutConstraints(0, 2, 0, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+   //---- ttfLicense ----
+   ttfLicense.setToolTipText("Enter your own URI for a file to download in the background");
+   panel1.add(ttfLicense, new TableLayoutConstraints(1, 2, 1, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+   //---- label6 ----
+   label6.setText("Zoom");
+   label6.setHorizontalAlignment(SwingConstants.RIGHT);
+   panel1.add(label6, new TableLayoutConstraints(2, 2, 2, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+   //---- ttfZoom ----
+   ttfZoom.setText("5");
+   panel1.add(ttfZoom, new TableLayoutConstraints(3, 2, 3, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+   }
+   contentPanel.add(panel1, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+  
+   //-----------------spinnerLati------------------
+   
+   SpinnerModel numModel = new SpinnerNumberModel((Number) ttfLat.getValue(), -200, 200, 0.00001);
+   ttfLat.setModel(numModel); 
+   ChangeListener listener = new ChangeListener() {
+	   public void stateChanged(ChangeEvent e) {
+		   ttfLat.getValue();
+	   }
+   };
+   ttfLat.addChangeListener(listener);
+   
+   //panel1.add(spinnerLati);
+   //, new TableLayoutConstraints(4,0,4, 0, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT)
+
+
+   //------------btnInLong---------------
+   btnInLong.setText("+");
+   btnInLong.setHorizontalAlignment(SwingConstants.LEFT);
+   btnInLong.setHorizontalTextPosition(SwingConstants.RIGHT);
+   btnInLong.addActionListener(new ActionListener() {
+	   public void actionPerformed(ActionEvent e) {
+		   ttfLon.setText(addlong());
+		   }
+	   }
+   );
+panel1.add(btnInLong, new TableLayoutConstraints(4,1,4, 1, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
+
+//------------btnDeLong---------------
+btnDeLong.setText("-");
+btnDeLong.setHorizontalAlignment(SwingConstants.LEFT);
+btnDeLong.setHorizontalTextPosition(SwingConstants.RIGHT);
+btnDeLong.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+ttfLon.setText(delong());
+}
+});
+panel1.add(btnDeLong, new TableLayoutConstraints(5,1,5, 1, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
+
+//------------btnInZoom---------------
+btnInZoom.setText("+");
+btnInZoom.setHorizontalAlignment(SwingConstants.LEFT);
+btnInZoom.setHorizontalTextPosition(SwingConstants.RIGHT);
+btnInZoom.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+ttfZoom.setText(addzoom());
+}
+});
+panel1.add(btnInZoom, new TableLayoutConstraints(4,2,4, 2, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
+
+//------------btnDeZoom---------------
+btnDeZoom.setText("-");
+
+btnDeZoom.setHorizontalAlignment(SwingConstants.LEFT);
+btnDeZoom.setHorizontalTextPosition(SwingConstants.RIGHT);
+btnDeZoom.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+ttfZoom.setText(dezoom());
+}
+});
+panel1.add(btnDeZoom, new TableLayoutConstraints(5,2,5, 2, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
+
+  
+  
+//-------------labelcity-------------------
+labelcity.setText("City");
+labelcity.setHorizontalAlignment(SwingConstants.RIGHT);
+   panel1.add(labelcity, new TableLayoutConstraints(2, 3, 2, 3, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+  
+   //-------------labelcountry-------------------
+   labelcountry.setText("Country");
+   labelcountry.setHorizontalAlignment(SwingConstants.RIGHT);
+   panel1.add(labelcountry, new TableLayoutConstraints(0, 3, 0, 3, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+   //---------------jcmbcountry-------------
+   String[] countryList={"Select","Canada","China","USA"};
+   jcmbcountry =new JComboBox(countryList);
+
+   jcmbcountry.addItemListener(new ItemListener(){
+   public void itemStateChanged(ItemEvent e) {
+  
+   String canada[] = {"Select","Ottawa","Toronto","Vancouver"};
+   String china[] = {"Select","Beijing","Shanghai","Hongkong"};
+   String usa[] = {"Select","Washington D.C.","New York","Los Angeles"};
+  
+   if(e.getSource()==jcmbcountry){
+   if(jcmbcountry.getSelectedItem().equals("Select")){
+   jcmbcity.setEnabled(false); }
+   else if(jcmbcountry.getSelectedItem().equals("Canada")){
+   jcmbcity.setEnabled(true);
+   jcmbcity.removeAllItems();
+   for(int i=0;i<canada.length;i++){
+   jcmbcity.addItem(canada[i]);
+   }
+   }
+   else if(jcmbcountry.getSelectedItem().equals("China")){
+   jcmbcity.setEnabled(true);
+   jcmbcity.removeAllItems();
+   for(int i=0;i<china.length;i++)
+   {
+   jcmbcity.addItem(china[i]);
+   }
+   }
+   else if(jcmbcountry.getSelectedItem().equals("USA")){
+   jcmbcity.setEnabled(true);
+   jcmbcity.removeAllItems();
+   for(int i=0;i<usa.length;i++)
+   {
+   jcmbcity.addItem(usa[i]);
+   }
+   }
+   }
+   }
+   });
+   panel1.add(jcmbcountry, new TableLayoutConstraints(1,3,1,3, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+   //-------------jcmbcity--------------
+
+CityList = new String [9];
+CityList [0] = "Ottawa";
+CityList [1] = "Toronto";
+CityList [2] = "Vancouver";
+CityList [3] = "Beijing";
+CityList [4] = "Shanghai";
+CityList [5] = "Hongkong";
+CityList [6] = "Washington D.C.";
+CityList [7] = "New York";
+CityList [8] = "Los Angeles";
+
+jcmbcity = new JComboBox (CityList);
+jcmbcity.addItemListener(new ItemListener(){
+public void itemStateChanged(ItemEvent e) {
+
+int Selection;
+Selection = jcmbcity.getSelectedIndex();
+if(jcmbcountry.getSelectedItem().equals("China")&& jcmbcity.getSelectedIndex()==1)
+{
+Selection = 4;
+}
+if(jcmbcountry.getSelectedItem().equals("China")&& jcmbcity.getSelectedIndex()==2)
+{
+Selection = 5;
+}
+if(jcmbcountry.getSelectedItem().equals("China")&& jcmbcity.getSelectedIndex()==3)
+{
+Selection = 6;
+}
+if(jcmbcountry.getSelectedItem().equals("USA")&& jcmbcity.getSelectedIndex()==1)
+{
+Selection = 7;
+}
+if(jcmbcountry.getSelectedItem().equals("USA")&& jcmbcity.getSelectedIndex()==2)
+{
+Selection = 8;
+}
+if(jcmbcountry.getSelectedItem().equals("USA")&& jcmbcity.getSelectedIndex()==3)
+{
+Selection = 9;
+}
+if (Selection == 1) {
+ttfLat.setValue(45.25);
+             ttfLon.setText("-75.43");
+} else if (Selection == 2) {
+ttfLat.setValue(43.39);
+             ttfLon.setText("-79.23");
+} else if (Selection == 3) {
+ttfLat.setValue(49.14);
+             ttfLon.setText("-123.05");
+}
+else if (Selection == 4) {
+ttfLat.setValue(39.55);
+             ttfLon.setText("116.23");
+}
+else if (Selection == 5) {
+ttfLat.setValue(31.2);
+             ttfLon.setText("121.4");
+}
+else if (Selection == 6) {
+ttfLat.setValue(22.15);
+             ttfLon.setText("114.15");
+}
+else if (Selection == 7) {
+ttfLat.setValue(38.914);
+             ttfLon.setText("-77.013");
+}
+else if (Selection == 8) {
+ttfLat.setValue(40.43);
+             ttfLon.setText("-74.00");
+}
+else if (Selection == 9) {
+ttfLat.setValue(34.04);
+             ttfLon.setText("-118.05");
+}
+}
+}
+);
+
+
+jcmbcity.setEditable(false);
+jcmbcity.setMaximumRowCount(5);
+jcmbcity.insertItemAt("select city", 0);
+jcmbcity.setSelectedIndex(0);
+
+panel1.add(jcmbcity, new TableLayoutConstraints(3,3,3, 3,
+TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
+
+//--------------------btnSaveLocation--------------------------
+btnSaveLocation = new JButton("Save a Location");
+btnSaveLocation.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+if (e.getSource() == btnSaveLocation) {
+
+int rval = fc.showSaveDialog(fc);
+if(rval == JFileChooser.APPROVE_OPTION) {
+
+File file = fc.getSelectedFile();
+
+try {
+String latitude = ttfLat.getValue().toString();
+String longitude = ttfLon.getText();
+//File out_file = new File(file);
+BufferedWriter out = new BufferedWriter(new FileWriter(file));
+out.write("latitude: "+ latitude + " longitude: "+ longitude);
+
+out.flush();
+out.close();
+} catch(IOException ex) {
+System.out.println("Exception ");
+}
+}
+
+else {
+// Do nothing
+System.out.println("The user choose not to save anything");
+}
+}
+}
+});
+
+panel1.add(btnSaveLocation, new TableLayoutConstraints(6,3,6, 3,
+TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
+
+//======== scrollPane1 ========
+   {
+   scrollPane1.setBorder(new TitledBorder("System.out - displays all status and progress messages, etc."));
+   scrollPane1.setOpaque(false);
+
+   //---- ttaStatus ----
+   ttaStatus.setBorder(Borders.createEmptyBorder("1dlu, 1dlu, 1dlu, 1dlu"));
+   ttaStatus.setToolTipText("<html>Task progress updates (messages) are displayed here,<br>along with any other output generated by the Task.<html>");
+   scrollPane1.setViewportView(ttaStatus);
+   }
+   contentPanel.add(scrollPane1, new TableLayoutConstraints(0, 1, 0, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+   //======== panel2 ========
+   {
+   panel2.setOpaque(false);
+   panel2.setBorder(new CompoundBorder(
+   new TitledBorder("Status - control progress reporting"),
+   Borders.DLU2_BORDER));
+   panel2.setLayout(new TableLayout(new double[][] {
+   {0.45, TableLayout.FILL, 0.45},
+   {TableLayout.PREFERRED, TableLayout.PREFERRED}}));
+   ((TableLayout)panel2.getLayout()).setHGap(5);
+   ((TableLayout)panel2.getLayout()).setVGap(5);
+
+   //======== panel3 ========
+   {
+   panel3.setOpaque(false);
+   panel3.setLayout(new GridLayout(1, 2));
+
+   //---- checkboxRecvStatus ----
+   checkboxRecvStatus.setText("Enable \"Recieve\"");
+   checkboxRecvStatus.setOpaque(false);
+   checkboxRecvStatus.setToolTipText("Task will fire \"send\" status updates");
+   checkboxRecvStatus.setSelected(true);
+   panel3.add(checkboxRecvStatus);
+
+   //---- checkboxSendStatus ----
+   checkboxSendStatus.setText("Enable \"Send\"");
+   checkboxSendStatus.setOpaque(false);
+   checkboxSendStatus.setToolTipText("Task will fire \"recieve\" status updates");
+   panel3.add(checkboxSendStatus);
+   }
+   panel2.add(panel3, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+   //---- ttfProgressMsg ----
+   ttfProgressMsg.setText("Loading map from Google Static Maps");
+   ttfProgressMsg.setToolTipText("Set the task progress message here");
+   panel2.add(ttfProgressMsg, new TableLayoutConstraints(2, 0, 2, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+   //---- progressBar ----
+   progressBar.setStringPainted(true);
+   progressBar.setString("progress %");
+   progressBar.setToolTipText("% progress is displayed here");
+   panel2.add(progressBar, new TableLayoutConstraints(0, 1, 0, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+   //---- lblProgressStatus ----
+   lblProgressStatus.setText("task status listener");
+   lblProgressStatus.setHorizontalTextPosition(SwingConstants.LEFT);
+   lblProgressStatus.setHorizontalAlignment(SwingConstants.LEFT);
+   lblProgressStatus.setToolTipText("Task status messages are displayed here when the task runs");
+   panel2.add(lblProgressStatus, new TableLayoutConstraints(2, 1, 2, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+   }
+   contentPanel.add(panel2, new TableLayoutConstraints(0, 2, 0, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+   }
+   dialogPane.add(contentPanel, BorderLayout.CENTER);
   }
   contentPane.add(dialogPane, BorderLayout.CENTER);
   setSize(675, 485);
   setLocationRelativeTo(null);
-  // JFormDesigner - End of component initialization  //GEN-END:initComponents
+  // JFormDesigner - End of component initialization //GEN-END:initComponents
 }
 
-// JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+// JFormDesigner - Variables declaration - DO NOT MODIFY //GEN-BEGIN:variables
 // Generated using JFormDesigner non-commercial license
 private JPanel dialogPane;
 private JPanel contentPanel;
@@ -752,7 +814,7 @@ private JPanel panel1;
 private JLabel label2;
 private JTextField ttfSizeW;
 private JLabel label4;
-private JTextField ttfLat;
+//private JTextField ttfLat;
 private JButton btnGetMap;
 private JLabel label3;
 private JTextField ttfSizeH;
@@ -778,14 +840,18 @@ private JButton btnInLong;
 private JButton btnDeLong;
 private JButton btnInZoom;
 private JButton btnDeZoom;
-private JButton btnInLati;
-private JButton btnDeLati;
-private JComboBox jcmbcountry;
+private JLabel labelcity;
+private JLabel labelcountry;
 private JComboBox jcmbcity;
-/*private JSpinner spinnerLati;
-private JSpinner spinnerLong;
+private JComboBox jcmbcountry;
+private JSpinner ttfLat;
+//spinnerLati;
+/*private JSpinner spinnerLong;
 private JSpinner spinnerzoom;
 private SpinnerModel latiModel;*/
-
-// JFormDesigner - End of variables declaration  //GEN-END:variables
+private String [] CityList;
+private JButton btnSaveLocation;
+private JFileChooser fc;
+private JTextArea log;
+// JFormDesigner - End of variables declaration //GEN-END:variables
 }
