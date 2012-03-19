@@ -91,8 +91,8 @@ private void _setupTask() {
       // set the license key
       MapLookup.setLicenseKey(ttfLicense.getText());
       // get the uri for the static map
-      String uri = MapLookup.getMap(Double.parseDouble((String) ttfLat.getValue()),
-                                    Double.parseDouble(ttfLon.getText()),
+      String uri = MapLookup.getMap(Double.parseDouble((ttfLat.getValue().toString()) ),
+                                    Double.parseDouble(ttfLon.getValue().toString()),
                                     Integer.parseInt(ttfSizeW.getText()),
                                     Integer.parseInt(ttfSizeH.getText()),
                                     Integer.parseInt(ttfZoom.getText())
@@ -319,7 +319,7 @@ double la = la1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
 return Double.toString(la);
 }*/
 
-private String addlong(){
+/*private String addlong(){
 double lon = Double.parseDouble(ttfLon.getText())+0.00001;
 BigDecimal lo1 = new BigDecimal(Double.toString(lon));
 double lo = lo1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -332,6 +332,7 @@ BigDecimal lo1 = new BigDecimal(Double.toString(lon));
 double lo = lo1.setScale(5, BigDecimal.ROUND_HALF_UP).doubleValue();
 return Double.toString(lo);
 }
+*/
 
 private void initComponents() {
   // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents
@@ -342,12 +343,16 @@ private void initComponents() {
   label2 = new JLabel();
   ttfSizeW = new JTextField();
   label4 = new JLabel();
-  ttfLat = new JSpinner();
+  SpinnerModel numModel = new SpinnerNumberModel(38.931099, 
+		   -90, 90, 0.001);
+  ttfLat = new JSpinner(numModel);
   btnGetMap = new JButton();
   label3 = new JLabel();
   ttfSizeH = new JTextField();
   label5 = new JLabel();
-  ttfLon = new JTextField();
+  SpinnerModel numModel2 = new SpinnerNumberModel(-77.3489, 
+		   -180, 180, 0.001);
+  ttfLon = new JSpinner(numModel2);
   btnQuit = new JButton();
   label1 = new JLabel();
   ttfLicense = new JTextField();
@@ -376,7 +381,6 @@ private void initComponents() {
   jcmbcountry = new JComboBox();
   btnSaveLocation = new JButton();
   fc = new JFileChooser();
-  log = new JTextArea();
   
   //======== this ========
   setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -429,7 +433,7 @@ private void initComponents() {
    panel1.add(label4, new TableLayoutConstraints(2, 0, 2, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
    //---- ttfLat ----
-   ttfLat.setValue(38.931099);
+   //ttfLat.setValue("38.931099");
    panel1.add(ttfLat, new TableLayoutConstraints(3, 0, 3, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
    //---- btnGetMap ----
@@ -458,7 +462,7 @@ private void initComponents() {
    panel1.add(label5, new TableLayoutConstraints(2, 1, 2, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
    //---- ttfLon ----
-   ttfLon.setText("-77.3489");
+   //ttfLon.setText("-77.3489");
    panel1.add(ttfLon, new TableLayoutConstraints(3, 1, 3, 1, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
    //---- btnQuit ----
@@ -494,22 +498,22 @@ private void initComponents() {
    contentPanel.add(panel1, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
   
    //-----------------spinnerLati------------------
-   
-   SpinnerModel numModel = new SpinnerNumberModel((Number) ttfLat.getValue(), -200, 200, 0.00001);
-   ttfLat.setModel(numModel); 
-   ChangeListener listener = new ChangeListener() {
+   /*ttfLat.addChangeListener( new ChangeListener(){
 	   public void stateChanged(ChangeEvent e) {
 		   ttfLat.getValue();
 	   }
-   };
-   ttfLat.addChangeListener(listener);
+   }
+   );*/
+   
+ 
+ 
    
    //panel1.add(spinnerLati);
    //, new TableLayoutConstraints(4,0,4, 0, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT)
 
 
    //------------btnInLong---------------
-   btnInLong.setText("+");
+   /*btnInLong.setText("+");
    btnInLong.setHorizontalAlignment(SwingConstants.LEFT);
    btnInLong.setHorizontalTextPosition(SwingConstants.RIGHT);
    btnInLong.addActionListener(new ActionListener() {
@@ -518,7 +522,8 @@ private void initComponents() {
 		   }
 	   }
    );
-panel1.add(btnInLong, new TableLayoutConstraints(4,1,4, 1, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
+   panel1.add(btnInLong, new TableLayoutConstraints(4,1,4, 1, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
+   
 
 //------------btnDeLong---------------
 btnDeLong.setText("-");
@@ -530,7 +535,7 @@ ttfLon.setText(delong());
 }
 });
 panel1.add(btnDeLong, new TableLayoutConstraints(5,1,5, 1, TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
-
+*/
 //------------btnInZoom---------------
 btnInZoom.setText("+");
 btnInZoom.setHorizontalAlignment(SwingConstants.LEFT);
@@ -652,38 +657,38 @@ if(jcmbcountry.getSelectedItem().equals("USA")&& jcmbcity.getSelectedIndex()==3)
 Selection = 9;
 }
 if (Selection == 1) {
-ttfLat.setValue(45.25);
-             ttfLon.setText("-75.43");
+	ttfLat.setValue(45.25);
+	ttfLon.setValue(-75.43);
 } else if (Selection == 2) {
 ttfLat.setValue(43.39);
-             ttfLon.setText("-79.23");
+             ttfLon.setValue(-79.23);
 } else if (Selection == 3) {
 ttfLat.setValue(49.14);
-             ttfLon.setText("-123.05");
+             ttfLon.setValue(-123.05);
 }
 else if (Selection == 4) {
 ttfLat.setValue(39.55);
-             ttfLon.setText("116.23");
+             ttfLon.setValue(116.23);
 }
 else if (Selection == 5) {
 ttfLat.setValue(31.2);
-             ttfLon.setText("121.4");
+             ttfLon.setValue(121.4);
 }
 else if (Selection == 6) {
 ttfLat.setValue(22.15);
-             ttfLon.setText("114.15");
+             ttfLon.setValue(114.15);
 }
 else if (Selection == 7) {
 ttfLat.setValue(38.914);
-             ttfLon.setText("-77.013");
+             ttfLon.setValue(-77.013);
 }
 else if (Selection == 8) {
 ttfLat.setValue(40.43);
-             ttfLon.setText("-74.00");
+             ttfLon.setValue(-74.00);
 }
 else if (Selection == 9) {
 ttfLat.setValue(34.04);
-             ttfLon.setText("-118.05");
+             ttfLon.setValue(-118.05);
 }
 }
 }
@@ -711,7 +716,7 @@ File file = fc.getSelectedFile();
 
 try {
 String latitude = ttfLat.getValue().toString();
-String longitude = ttfLon.getText();
+String longitude = ttfLon.getValue().toString();
 //File out_file = new File(file);
 BufferedWriter out = new BufferedWriter(new FileWriter(file));
 out.write("latitude: "+ latitude + " longitude: "+ longitude);
@@ -819,7 +824,7 @@ private JButton btnGetMap;
 private JLabel label3;
 private JTextField ttfSizeH;
 private JLabel label5;
-private JTextField ttfLon;
+//private JTextField ttfLon;
 private JButton btnQuit;
 private JLabel label1;
 private JTextField ttfLicense;
@@ -845,6 +850,7 @@ private JLabel labelcountry;
 private JComboBox jcmbcity;
 private JComboBox jcmbcountry;
 private JSpinner ttfLat;
+private JSpinner ttfLon;
 //spinnerLati;
 /*private JSpinner spinnerLong;
 private JSpinner spinnerzoom;
@@ -852,6 +858,5 @@ private SpinnerModel latiModel;*/
 private String [] CityList;
 private JButton btnSaveLocation;
 private JFileChooser fc;
-private JTextArea log;
 // JFormDesigner - End of variables declaration //GEN-END:variables
 }
