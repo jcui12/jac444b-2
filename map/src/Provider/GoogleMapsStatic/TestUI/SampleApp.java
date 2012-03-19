@@ -274,7 +274,7 @@ private void _displayImgInFrame() {
 
 private void _displayRespStrInFrame() {
 
-  final JFrame frame = new JFrame("Google Static Map - Error");
+	final JFrame frame = new JFrame("Google Static Map - Error");
   GUIUtils.setAppIcon(frame, "69.png");
   frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
