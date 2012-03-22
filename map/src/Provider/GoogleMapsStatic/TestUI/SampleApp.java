@@ -61,11 +61,11 @@ private void doInit() {
 	GUIUtils.setAppIcon(this, "burn.png");
 	GUIUtils.centerOnScreen(this);
 	setVisible(true);
-		
+
 	int W = 28, H = W;
 	boolean blur = false;
 	float alpha = .7f;
-		
+
 	try {
 		btnGetMap.setIcon(ImageUtils.loadScaledBufferedIcon("ok1.png", W, H, blur, alpha));
 		btnQuit.setIcon(ImageUtils.loadScaledBufferedIcon("charging.png", W, H, blur, alpha));
@@ -223,49 +223,41 @@ private void _displayImgInFrame() {
     	}
 	);
   	
-	//--------------------btnSaveLocation--------------------------
+	//--------------------btnSaveMap--------------------------
 	btnSaveMap = new JButton("Save Map");
 	JPanel panelmap = new JPanel();
 	panelmap.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 20));
 	panelmap.add(btnSaveMap);
 	Container jfc2 = frame.getContentPane();
 	jfc2.add(panelmap, BorderLayout.CENTER);
-	//frame.getContentPane().add(panelmap);
-	/*
+
 	btnSaveMap.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == btnSaveMap) {
-	
+				RenderedImage rendImage = myCreateImage();
+			
 				int rval = fc2.showSaveDialog(fc2);
 				if(rval == JFileChooser.APPROVE_OPTION) {
 		
-					File file = fc.getSelectedFile();
-	
-					try {
-						String latitude = ttfLat.getValue().toString();
-						String longitude = ttfLon.getValue().toString();
-						//File out_file = new File(file);
-						BufferedWriter out = new BufferedWriter(new FileWriter(file));
-						out.write("latitude: "+ latitude + " longitude: "+ longitude);
-			
-						out.flush();
-						out.close();
-						} 
-					catch(IOException ex) {
-						System.out.println("Exception ");
-					}
-				}
-		
+					File saveFile = fc2.getSelectedFile();
+					
+	                 try {
+	                     ImageIO.write(rendImage, "jpg", new File(saveFile +".jpg"));
+	                    
+	                 } catch (IOException ex) {
+	                	 System.out.println("Exception ");
+	                 }	               
+	                 }
 				else {
-					// Do nothing
-					System.out.println("The user choose not to save anything");
+	                 System.out.println("The user choose not to save anything");
+	                 }
 				}
+
 			}
-		}
-	}
-	);*/
-	
-	frame.setContentPane(imgLbl);
+		});
+	panelmap.add(imgLbl);
+	panelmap.repaint(); 
+//	frame.setContentPane(imgLbl);
 	frame.pack();
 
 	GUIUtils.centerOnScreen(frame);
@@ -345,6 +337,17 @@ private String dezoom(){
 int zoom = Integer.parseInt(ttfZoom.getText())-1;
 return Integer.toString(zoom);
 }
+public RenderedImage myCreateImage() {
+    int width = _img.getWidth(); 
+    int height =_img.getHeight();
+    
+    BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+    bufferedImage =  _img;
+   
+    return bufferedImage;
+}
+
 
 private void initComponents() {
   // JFormDesigner - Component initialization - DO NOT MODIFY //GEN-BEGIN:initComponents
@@ -696,8 +699,7 @@ File file = fc.getSelectedFile();
 try {
 String latitude = ttfLat.getValue().toString();
 String longitude = ttfLon.getValue().toString();
-//File out_file = new File(file);
-BufferedWriter out = new BufferedWriter(new FileWriter(file));
+BufferedWriter out = new BufferedWriter(new FileWriter(file + ".txt" ));
 out.write("latitude: "+ latitude + " longitude: "+ longitude);
 
 out.flush();
@@ -708,7 +710,6 @@ System.out.println("Exception ");
 }
 
 else {
-// Do nothing
 System.out.println("The user choose not to save anything");
 }
 }
@@ -836,15 +837,12 @@ private JComboBox jcmbcity;
 private JComboBox jcmbcountry;
 private JSpinner ttfLat;
 private JSpinner ttfLon;
-//spinnerLati;
-/*private JSpinner spinnerLong;
-private JSpinner spinnerzoom;
-private SpinnerModel latiModel;*/
 private String [] CityList;
 private JButton btnSaveLocation;
 private JFileChooser fc;
 private JButton btnSaveMap;
 private JFileChooser fc2;
 private JButton btnEmail;
+private RenderedImage rendImage;
 // JFormDesigner - End of variables declaration //GEN-END:variables
 }
