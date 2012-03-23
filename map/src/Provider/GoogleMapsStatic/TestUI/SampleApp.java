@@ -26,7 +26,6 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.*;
 import java.io.*;
-import java.math.BigDecimal;
 import java.text.*;
 import java.util.concurrent.*;
 
@@ -50,7 +49,7 @@ private String _respStr;
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 public static void main(String[] args) {
-	Utils.createInEDT(SampleApp.class);
+Utils.createInEDT(SampleApp.class);
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -58,72 +57,72 @@ public static void main(String[] args) {
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 private void doInit() {
-	GUIUtils.setAppIcon(this, "burn.png");
-	GUIUtils.centerOnScreen(this);
-	setVisible(true);
+GUIUtils.setAppIcon(this, "burn.png");
+GUIUtils.centerOnScreen(this);
+setVisible(true);
 
-	int W = 28, H = W;
-	boolean blur = false;
-	float alpha = .7f;
+int W = 28, H = W;
+boolean blur = false;
+float alpha = .7f;
 
-	try {
-		btnGetMap.setIcon(ImageUtils.loadScaledBufferedIcon("ok1.png", W, H, blur, alpha));
-		btnQuit.setIcon(ImageUtils.loadScaledBufferedIcon("charging.png", W, H, blur, alpha));
-		}
-	catch (Exception e) {
-		System.out.println(e);
-		}
-	_setupTask();
+try {
+btnGetMap.setIcon(ImageUtils.loadScaledBufferedIcon("ok1.png", W, H, blur, alpha));
+btnQuit.setIcon(ImageUtils.loadScaledBufferedIcon("charging.png", W, H, blur, alpha));
+}
+catch (Exception e) {
+System.out.println(e);
+}
+_setupTask();
 }
 
 /** create a test task and wire it up with a task handler that dumps output to the textarea */
 @SuppressWarnings("unchecked")
 private void _setupTask() {
 
-	TaskExecutorIF<ByteBuffer> functor = new TaskExecutorAdapter<ByteBuffer>() {
+TaskExecutorIF<ByteBuffer> functor = new TaskExecutorAdapter<ByteBuffer>() {
     public ByteBuffer doInBackground(Future<ByteBuffer> swingWorker,
                                      SwingUIHookAdapter hook) throws Exception
     {
 
-    	_initHook(hook);
+     _initHook(hook);
 
-    	// set the license key
-    	MapLookup.setLicenseKey(ttfLicense.getText());
-    	// get the uri for the static map
-    	String uri = MapLookup.getMap(Double.parseDouble((ttfLat.getValue().toString()) ),
+     // set the license key
+     MapLookup.setLicenseKey(ttfLicense.getText());
+     // get the uri for the static map
+     String uri = MapLookup.getMap(Double.parseDouble((ttfLat.getValue().toString()) ),
                                       Double.parseDouble(ttfLon.getValue().toString()),
                                       Integer.parseInt(ttfSizeW.getText()),
                                       Integer.parseInt(ttfSizeH.getText()),
                                       Integer.parseInt(ttfZoom.getText())
         );
-    	sout("Google Maps URI=" + uri);
+     sout("Google Maps URI=" + uri);
 
-    	// get the map from Google
-    	GetMethod get = new GetMethod(uri);
-    	new HttpClient().executeMethod(get);
+     // get the map from Google
+     GetMethod get = new GetMethod(uri);
+     new HttpClient().executeMethod(get);
 
-    	ByteBuffer data = HttpUtils.getMonitoredResponse(hook, get);
+     ByteBuffer data = HttpUtils.getMonitoredResponse(hook, get);
 
-    	try {
-    		_img = ImageUtils.toCompatibleImage(ImageIO.read(data.getInputStream()));
-    		sout("converted downloaded data to image...");
-    	}
-    	catch (Exception e) {
-    		_img = null;
-    		sout("The URI is not an image. Data is downloaded, can't display it as an image.");
-    		_respStr = new String(data.getBytes());
+     try {
+     _img = ImageUtils.toCompatibleImage(ImageIO.read(data.getInputStream()));
+     sout("converted downloaded data to image...");
+     }
+     catch (Exception e) {
+     _img = null;
+     sout("The URI is not an image. Data is downloaded, can't display it as an image.");
+     _respStr = new String(data.getBytes());
         }
 
-    	return data;
+     return data;
     }
 
     @Override public String getName() {
-    	return _task.getName();
+     return _task.getName();
     }
 };
 
   _task = new SimpleTask(
-	  new TaskManager(),
+new TaskManager(),
       functor,
       "HTTP GET Task",
       "Download an image from a URL",
@@ -131,11 +130,11 @@ private void _setupTask() {
   );
 
   _task.addStatusListener(new PropertyChangeListener() {
-	  public void propertyChange(PropertyChangeEvent evt) {
-		  sout(":: task status change - " + ProgressMonitorUtils.parseStatusMessageFrom(evt));
-		  lblProgressStatus.setText(ProgressMonitorUtils.parseStatusMessageFrom(evt));
-	  }
-  	});
+public void propertyChange(PropertyChangeEvent evt) {
+sout(":: task status change - " + ProgressMonitorUtils.parseStatusMessageFrom(evt));
+lblProgressStatus.setText(ProgressMonitorUtils.parseStatusMessageFrom(evt));
+}
+   });
 
   _task.setTaskHandler(new
       SimpleTaskHandler<ByteBuffer>() {
@@ -175,29 +174,29 @@ private void _setupTask() {
 }
 
 private SwingUIHookAdapter _initHook(SwingUIHookAdapter hook) {
-	hook.enableRecieveStatusNotification(checkboxRecvStatus.isSelected());
-	hook.enableSendStatusNotification(checkboxSendStatus.isSelected());
+hook.enableRecieveStatusNotification(checkboxRecvStatus.isSelected());
+hook.enableSendStatusNotification(checkboxSendStatus.isSelected());
 
-	hook.setProgressMessage(ttfProgressMsg.getText());
+hook.setProgressMessage(ttfProgressMsg.getText());
 
-	PropertyChangeListener listener = new PropertyChangeListener() {
-		public void propertyChange(PropertyChangeEvent evt) {
-			SwingUIHookAdapter.PropertyList type = ProgressMonitorUtils.parseTypeFrom(evt);
-			int progress = ProgressMonitorUtils.parsePercentFrom(evt);
-			String msg = ProgressMonitorUtils.parseMessageFrom(evt);
+PropertyChangeListener listener = new PropertyChangeListener() {
+public void propertyChange(PropertyChangeEvent evt) {
+SwingUIHookAdapter.PropertyList type = ProgressMonitorUtils.parseTypeFrom(evt);
+int progress = ProgressMonitorUtils.parsePercentFrom(evt);
+String msg = ProgressMonitorUtils.parseMessageFrom(evt);
 
-			progressBar.setValue(progress);
-			progressBar.setString(type.toString());
+progressBar.setValue(progress);
+progressBar.setString(type.toString());
 
-			sout(msg);
-		}
+sout(msg);
+}
 };
 
 hook.addRecieveStatusListener(listener);
 hook.addSendStatusListener(listener);
 hook.addUnderlyingIOStreamInterruptedOrClosed(new PropertyChangeListener() {
-	public void propertyChange(PropertyChangeEvent evt) {
-		sout(evt.getPropertyName() + " fired!!!");
+public void propertyChange(PropertyChangeEvent evt) {
+sout(evt.getPropertyName() + " fired!!!");
     }
   }
 );
@@ -207,66 +206,91 @@ hook.addUnderlyingIOStreamInterruptedOrClosed(new PropertyChangeListener() {
 
 private void _displayImgInFrame() {
 
-	final JFrame frame = new JFrame("Google Static Map");
-	GUIUtils.setAppIcon(frame, "71.png");
-	frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+final JFrame frame = new JFrame("Google Static Map");
+GUIUtils.setAppIcon(frame, "71.png");
+frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-	JLabel imgLbl = new JLabel(new ImageIcon(_img));
-	imgLbl.setToolTipText(MessageFormat.format("<html>Image downloaded from URI<br>size: w={0}, h={1}</html>",
+JLabel imgLbl = new JLabel(new ImageIcon(_img));
+imgLbl.setToolTipText(MessageFormat.format("<html>Image downloaded from URI<br>size: w={0}, h={1}</html>",
                                              _img.getWidth(), _img.getHeight()));
-	imgLbl.addMouseListener(new MouseListener() {
-		public void mouseClicked(MouseEvent e) {}
-		public void mousePressed(MouseEvent e) { frame.dispose();}
-		public void mouseReleased(MouseEvent e) { }
-		public void mouseEntered(MouseEvent e) { }
-		public void mouseExited(MouseEvent e) { }
-    	}
-	);
-  	
-	//--------------------btnSaveMap--------------------------
-	btnSaveMap = new JButton("Save Map");
-	JPanel panelmap = new JPanel();
-	panelmap.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 20));
-	panelmap.add(btnSaveMap);
-	Container jfc2 = frame.getContentPane();
-	jfc2.add(panelmap, BorderLayout.CENTER);
+imgLbl.addMouseListener(new MouseListener() {
+public void mouseClicked(MouseEvent e) {}
+public void mousePressed(MouseEvent e) { frame.dispose();}
+public void mouseReleased(MouseEvent e) { }
+public void mouseEntered(MouseEvent e) { }
+public void mouseExited(MouseEvent e) { }
+     }
+);
+  
+//--------------------btnSaveMap--------------------------
+btnSaveMap = new JButton("Save Map");
+final JPanel panelmap = new JPanel();
+panelmap.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 20));
+panelmap.add(btnSaveMap);
+Container jfc2 = frame.getContentPane();
+jfc2.add(panelmap, BorderLayout.SOUTH);
 
-	btnSaveMap.addActionListener(new ActionListener() {
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == btnSaveMap) {
-				RenderedImage rendImage = myCreateImage();
-			
-				int rval = fc2.showSaveDialog(fc2);
-				if(rval == JFileChooser.APPROVE_OPTION) {
-		
-					File saveFile = fc2.getSelectedFile();
-					
-	                 try {
-	                     ImageIO.write(rendImage, "jpg", new File(saveFile +".jpg"));
-	                    
-	                 } catch (IOException ex) {
-	                	 System.out.println("Exception ");
-	                 }	               
-	                 }
-				else {
-	                 System.out.println("The user choose not to save anything");
-	                 }
-				}
+btnSaveMap.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+if (e.getSource() == btnSaveMap) {
+RenderedImage rendImage = myCreateImage();
 
-			}
-		});
-	panelmap.add(imgLbl);
-	panelmap.repaint(); 
-//	frame.setContentPane(imgLbl);
-	frame.pack();
+int rval = fc2.showSaveDialog(fc2);
+if(rval == JFileChooser.APPROVE_OPTION) {
 
-	GUIUtils.centerOnScreen(frame);
-	frame.setVisible(true);
+File saveFile = fc2.getSelectedFile();
+
+try {
+ImageIO.write(rendImage, "jpg", new File(saveFile +".jpg"));
+
+} catch (IOException ex) {
+System.out.println("Exception ");
+}
+}
+else {
+System.out.println("The user choose not to save anything");
+}
+}
+
+}
+});
+panelmap.add(imgLbl);
+panelmap.repaint();
+
+//--------------------zoomSlider--------------------------
+final int FPS_MIN = 1;
+final int FPS_MAX = 19;
+final int FPS_INIT = 5;
+
+zoomSlider = new JSlider(JSlider.VERTICAL, FPS_MIN, FPS_MAX, FPS_INIT);
+panelmap.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 20));
+panelmap.add(zoomSlider);
+zoomSlider.setMajorTickSpacing(4);
+zoomSlider.setMinorTickSpacing(1);
+zoomSlider.setPaintTicks(true);
+zoomSlider.setPaintLabels(true);
+
+zoomSlider.addChangeListener(new ChangeListener() {
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		ttfZoom.setText(Integer.toString(zoomSlider.getValue()));
+	}
+});
+
+Zoom.setText("Zoom");
+Zoom.setHorizontalAlignment(SwingConstants.LEFT);
+panelmap.add(Zoom, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+
+frame.pack();
+
+GUIUtils.centerOnScreen(frame);
+frame.setVisible(true);
 }
 
 private void _displayRespStrInFrame() {
 
-	final JFrame frame = new JFrame("Google Static Map - Error");
+final JFrame frame = new JFrame("Google Static Map - Error");
   GUIUtils.setAppIcon(frame, "69.png");
   frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -338,12 +362,12 @@ int zoom = Integer.parseInt(ttfZoom.getText())-1;
 return Integer.toString(zoom);
 }
 public RenderedImage myCreateImage() {
-    int width = _img.getWidth(); 
+    int width = _img.getWidth();
     int height =_img.getHeight();
     
     BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-    bufferedImage =  _img;
+    bufferedImage = _img;
    
     return bufferedImage;
 }
@@ -358,15 +382,15 @@ private void initComponents() {
   label2 = new JLabel();
   ttfSizeW = new JTextField();
   label4 = new JLabel();
-  SpinnerModel numModel = new SpinnerNumberModel(38.931099, 
-		   -90, 90, 0.001);
-  ttfLat = new JSpinner(numModel);	//2) controls to increase/decrease the latitudes and longitudes 
+  SpinnerModel numModel = new SpinnerNumberModel(38.931099,
+-90, 90, 0.001);
+  ttfLat = new JSpinner(numModel); //2) controls to increase/decrease the latitudes and longitudes
   btnGetMap = new JButton();
   label3 = new JLabel();
   ttfSizeH = new JTextField();
   label5 = new JLabel();
-  SpinnerModel numModel2 = new SpinnerNumberModel(-77.3489, 
-		   -180, 180, 0.001);		//2) controls to increase/decrease the latitudes and longitudes 
+  SpinnerModel numModel2 = new SpinnerNumberModel(-77.3489,
+-180, 180, 0.001); //2) controls to increase/decrease the latitudes and longitudes
   ttfLon = new JSpinner(numModel2);
   btnQuit = new JButton();
   label1 = new JLabel();
@@ -384,12 +408,8 @@ private void initComponents() {
   lblProgressStatus = new JLabel();
   
   //----------add new components----------------
-  btnInLong = new JButton();
-  btnDeLong = new JButton();
   btnInZoom = new JButton();
   btnDeZoom = new JButton();
-  //btnInLati = new JButton();
-  //btnDeLati = new JButton();
   labelcity = new JLabel();
   labelcountry = new JLabel();
   jcmbcity = new JComboBox();
@@ -399,6 +419,8 @@ private void initComponents() {
   btnSaveMap = new JButton();
   fc2 = new JFileChooser();
   btnEmail = new JButton();
+  zoomSlider = new JSlider();
+  Zoom = new JLabel();
   
   //======== this ========
   setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -515,15 +537,15 @@ private void initComponents() {
    }
    contentPanel.add(panel1, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
   
-   //1) zooming features 
+   //1) zooming features
    //------------btnInZoom---------------
    btnInZoom.setText("+");
    btnInZoom.setHorizontalAlignment(SwingConstants.CENTER);
    btnInZoom.setHorizontalTextPosition(SwingConstants.RIGHT);
    btnInZoom.addActionListener(new ActionListener() {
-	   public void actionPerformed(ActionEvent e) {
-		   ttfZoom.setText(addzoom());
-	   }
+public void actionPerformed(ActionEvent e) {
+ttfZoom.setText(addzoom());
+}
    });
 panel1.add(btnInZoom, new TableLayoutConstraints(4,2,4, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
@@ -540,10 +562,10 @@ ttfZoom.setText(dezoom());
 panel1.add(btnDeZoom, new TableLayoutConstraints(5,2,5, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
   
-  	//-------------labelcity-------------------
-	labelcity.setText("City");
-	labelcity.setHorizontalAlignment(SwingConstants.RIGHT);
-	panel1.add(labelcity, new TableLayoutConstraints(2, 3, 2, 3, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+   //-------------labelcity-------------------
+labelcity.setText("City");
+labelcity.setHorizontalAlignment(SwingConstants.RIGHT);
+panel1.add(labelcity, new TableLayoutConstraints(2, 3, 2, 3, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
   
    //-------------labelcountry-------------------
    labelcountry.setText("Country");
@@ -593,7 +615,7 @@ panel1.add(btnDeZoom, new TableLayoutConstraints(5,2,5, 2, TableLayoutConstraint
    panel1.add(jcmbcountry, new TableLayoutConstraints(1,3,1,3, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
    //-------------jcmbcity--------------
-   //3) get maps by countries (the default country), cities (default) 
+   //3) get maps by countries (the default country), cities (default)
 
 CityList = new String [9];
 CityList [0] = "Ottawa";
@@ -636,10 +658,10 @@ if(jcmbcountry.getSelectedItem().equals("USA")&& jcmbcity.getSelectedIndex()==3)
 {
 Selection = 9;
 }
-	//4) pre-calculated ranges of latitudes and longitudes
+//4) pre-calculated ranges of latitudes and longitudes
 if (Selection == 1) {
-	ttfLat.setValue(45.25);
-	ttfLon.setValue(-75.43);
+ttfLat.setValue(45.25);
+ttfLon.setValue(-75.43);
 } else if (Selection == 2) {
 ttfLat.setValue(43.39);
              ttfLon.setValue(-79.23);
@@ -685,7 +707,7 @@ panel1.add(jcmbcity, new TableLayoutConstraints(3,3,3, 3,
 TableLayoutConstraints.LEFT, TableLayoutConstraints.LEFT));
 
 //--------------------btnSaveLocation--------------------------
-//7) save the latitudes and longitudes to files 
+//7) save the latitudes and longitudes to files
 btnSaveLocation = new JButton("Save a Location");
 btnSaveLocation.addActionListener(new ActionListener() {
 public void actionPerformed(ActionEvent e) {
@@ -717,13 +739,13 @@ System.out.println("The user choose not to save anything");
 });
 
 panel1.add(btnSaveLocation, new TableLayoutConstraints(6,3,6, 3,
-		TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
 //--------------------btnEmail--------------------------
 //8) add e-mail function
 btnEmail = new JButton("Send E-mail");
 panel1.add(btnEmail, new TableLayoutConstraints(6,2,6, 2,
-		TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
 //======== scrollPane1 ========
    {
@@ -827,8 +849,6 @@ private JProgressBar progressBar;
 private JLabel lblProgressStatus;
 
 //------------add new variables---------------
-private JButton btnInLong;
-private JButton btnDeLong;
 private JButton btnInZoom;
 private JButton btnDeZoom;
 private JLabel labelcity;
@@ -844,5 +864,7 @@ private JButton btnSaveMap;
 private JFileChooser fc2;
 private JButton btnEmail;
 private RenderedImage rendImage;
+private JSlider zoomSlider;
+private JLabel Zoom;
 // JFormDesigner - End of variables declaration //GEN-END:variables
 }
