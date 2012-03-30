@@ -20,6 +20,7 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.FileChooserUI;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -263,7 +264,6 @@ final int FPS_MAX = 19;
 final int FPS_INIT = 5;
 
 zoomSlider = new JSlider(JSlider.VERTICAL, FPS_MIN, FPS_MAX, FPS_INIT);
-panelmap.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 20));
 panelmap.add(zoomSlider);
 zoomSlider.setMajorTickSpacing(4);
 zoomSlider.setMinorTickSpacing(1);
@@ -274,6 +274,8 @@ zoomSlider.addChangeListener(new ChangeListener() {
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		ttfZoom.setText(Integer.toString(zoomSlider.getValue()));
+		
+		panelmap.repaint();
 	}
 });
 
@@ -418,6 +420,8 @@ private void initComponents() {
   fc = new JFileChooser();
   btnSaveMap = new JButton();
   fc2 = new JFileChooser();
+  btnOpenMap = new JButton();
+  fc3 = new JFileChooser();
   btnEmail = new JButton();
   zoomSlider = new JSlider();
   Zoom = new JLabel();
@@ -741,11 +745,45 @@ System.out.println("The user choose not to save anything");
 panel1.add(btnSaveLocation, new TableLayoutConstraints(6,3,6, 3,
 TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
+//--------------------btnOpenMap--------------------------
+btnOpenMap = new JButton("Open Location");
+panel1.add(btnOpenMap, new TableLayoutConstraints(6,2,6, 2,
+		TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
+btnOpenMap.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+if (e.getSource() == btnOpenMap) {
+      int returnVal = fc3.showOpenDialog(fc3);
+      if (returnVal == JFileChooser.APPROVE_OPTION) {
+    	  Reader reader = null;
+			try {
+				reader = new FileReader(fc3.getSelectedFile());
+				BufferedReader br = new BufferedReader(reader);
+				String data = "";
+				try {
+					data = br.readLine();
+					System.out.println(data);
+					String [] tokens;
+					tokens = data.split( ":\\s|\\s" );
+					for(int i=0;i<tokens.length;i++)
+						System.out.println(tokens[i]);
+					ttfLat.setValue(Double.parseDouble(tokens[1]));
+					ttfLon.setValue(Double.parseDouble(tokens[3]));
+				} catch (IOException e1) {
+					e1.printStackTrace();
+					}
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+					}
+			}
+      }
+}});
+
 //--------------------btnEmail--------------------------
 //8) add e-mail function
 btnEmail = new JButton("Send E-mail");
-panel1.add(btnEmail, new TableLayoutConstraints(6,2,6, 2,
-TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+//panel1.add(btnEmail, new TableLayoutConstraints(6,2,6, 2,
+//TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
 //======== scrollPane1 ========
    {
@@ -862,6 +900,8 @@ private JButton btnSaveLocation;
 private JFileChooser fc;
 private JButton btnSaveMap;
 private JFileChooser fc2;
+private JButton btnOpenMap;
+private JFileChooser fc3;
 private JButton btnEmail;
 private RenderedImage rendImage;
 private JSlider zoomSlider;
