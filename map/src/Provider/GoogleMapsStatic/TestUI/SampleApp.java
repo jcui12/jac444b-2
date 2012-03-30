@@ -40,6 +40,7 @@ public class SampleApp extends JFrame {
 private SimpleTask _task;
 /** this might be null. holds the image to display in a popup */
 private BufferedImage _img;
+private BufferedImage imgnew;
 /** this might be null. holds the text in case image doesn't display */
 private String _respStr;
 
@@ -205,23 +206,24 @@ sout(evt.getPropertyName() + " fired!!!");
   return hook;
 }
 
-private void _displayImgInFrame() {
 
+ 
+
+private void _displayImgInFrame() {
 final JFrame frame = new JFrame("Google Static Map");
 GUIUtils.setAppIcon(frame, "71.png");
 frame.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-
 JLabel imgLbl = new JLabel(new ImageIcon(_img));
 imgLbl.setToolTipText(MessageFormat.format("<html>Image downloaded from URI<br>size: w={0}, h={1}</html>",
                                              _img.getWidth(), _img.getHeight()));
-imgLbl.addMouseListener(new MouseListener() {
+/*imgLbl.addMouseListener(new MouseListener() {
 public void mouseClicked(MouseEvent e) {}
 public void mousePressed(MouseEvent e) { frame.dispose();}
 public void mouseReleased(MouseEvent e) { }
 public void mouseEntered(MouseEvent e) { }
 public void mouseExited(MouseEvent e) { }
      }
-);
+);*/
   
 //--------------------btnSaveMap--------------------------
 btnSaveMap = new JButton("Save Map");
@@ -274,15 +276,31 @@ zoomSlider.addChangeListener(new ChangeListener() {
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		ttfZoom.setText(Integer.toString(zoomSlider.getValue()));
-		
-		panelmap.repaint();
-	}
+		 
+		    
+		//SampleApp app = new SampleApp();
+		//app._displayImgInFrame();
+//	BufferedImage imgnew = ImageUtils.toCompatibleImage(ImageIO.read(data.getInputStream()));
+	//  image2 = new MapWindow(  );
+		//panelmap.repaint();
+		}
 });
 
 Zoom.setText("Zoom");
 Zoom.setHorizontalAlignment(SwingConstants.LEFT);
 panelmap.add(Zoom, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
+//---------------------------getmapagain---------------
+getmap = new JButton("get Map");
+panelmap.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 20));
+panelmap.add(getmap);
+jfc2.add(panelmap, BorderLayout.SOUTH);
+getmap.addActionListener(new ActionListener() {
+public void actionPerformed(ActionEvent e) {
+	
+	startTaskAction();
+}
+});
 
 frame.pack();
 
@@ -779,11 +797,7 @@ if (e.getSource() == btnOpenMap) {
       }
 }});
 
-//--------------------btnEmail--------------------------
-//8) add e-mail function
-btnEmail = new JButton("Send E-mail");
-//panel1.add(btnEmail, new TableLayoutConstraints(6,2,6, 2,
-//TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
+
 
 //======== scrollPane1 ========
    {
@@ -906,5 +920,7 @@ private JButton btnEmail;
 private RenderedImage rendImage;
 private JSlider zoomSlider;
 private JLabel Zoom;
+private MapWindow image2;
+private JButton getmap;
 // JFormDesigner - End of variables declaration //GEN-END:variables
 }
