@@ -277,7 +277,7 @@ zoomSlider.addChangeListener(new ChangeListener() {
 	public void stateChanged(ChangeEvent e) {
 		ttfZoom.setText(Integer.toString(zoomSlider.getValue()));
 		 
-		    
+		
 		//SampleApp app = new SampleApp();
 		//app._displayImgInFrame();
 //	BufferedImage imgnew = ImageUtils.toCompatibleImage(ImageIO.read(data.getInputStream()));
@@ -290,15 +290,16 @@ Zoom.setText("Zoom");
 Zoom.setHorizontalAlignment(SwingConstants.LEFT);
 panelmap.add(Zoom, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
-//---------------------------getmapagain---------------
-getmap = new JButton("get Map");
+//---------------------------refresh---------------
+refresh = new JButton("refresh");
 panelmap.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 20));
-panelmap.add(getmap);
+panelmap.add(refresh);
 jfc2.add(panelmap, BorderLayout.SOUTH);
-getmap.addActionListener(new ActionListener() {
+refresh.addActionListener(new ActionListener() {
 public void actionPerformed(ActionEvent e) {
-	
+	//frame.dispose();
 	startTaskAction();
+	frame.dispose();
 }
 });
 
@@ -440,7 +441,7 @@ private void initComponents() {
   fc2 = new JFileChooser();
   btnOpenMap = new JButton();
   fc3 = new JFileChooser();
-  btnEmail = new JButton();
+  
   zoomSlider = new JSlider();
   Zoom = new JLabel();
   
@@ -566,7 +567,11 @@ private void initComponents() {
    btnInZoom.setHorizontalTextPosition(SwingConstants.RIGHT);
    btnInZoom.addActionListener(new ActionListener() {
 public void actionPerformed(ActionEvent e) {
-ttfZoom.setText(addzoom());
+	if(Integer.parseInt(ttfZoom.getText() )>18){
+		ttfZoom.setText("19");
+	}
+	else	
+		ttfZoom.setText(addzoom());
 }
    });
 panel1.add(btnInZoom, new TableLayoutConstraints(4,2,4, 2, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
@@ -578,6 +583,10 @@ btnDeZoom.setHorizontalAlignment(SwingConstants.CENTER);
 btnDeZoom.setHorizontalTextPosition(SwingConstants.RIGHT);
 btnDeZoom.addActionListener(new ActionListener() {
 public void actionPerformed(ActionEvent e) {
+	if(Integer.parseInt(ttfZoom.getText() ) < 1){
+		ttfZoom.setText("0");
+	}
+	else
 ttfZoom.setText(dezoom());
 }
 });
@@ -916,11 +925,9 @@ private JButton btnSaveMap;
 private JFileChooser fc2;
 private JButton btnOpenMap;
 private JFileChooser fc3;
-private JButton btnEmail;
 private RenderedImage rendImage;
 private JSlider zoomSlider;
 private JLabel Zoom;
-private MapWindow image2;
-private JButton getmap;
+private JButton refresh;
 // JFormDesigner - End of variables declaration //GEN-END:variables
 }

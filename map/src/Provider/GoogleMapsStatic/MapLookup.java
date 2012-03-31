@@ -28,7 +28,7 @@ public static final String CenterKey = "center";
 public static final String ZoomKey = "zoom";
 public static final int ZoomMax = 19;
 public static final int ZoomMin = 0;
-public static final int ZoomDefault = 10;
+public static final int ZoomDefault = 5;
 
 public static final String SizeKey = "size";
 public static final String SizeSeparator = "x";
