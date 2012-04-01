@@ -279,6 +279,8 @@ private void _displayImgInFrame() {
 		@Override
 		public void stateChanged(ChangeEvent e) {
 			ttfZoom.setText(Integer.toString(zoomSlider.getValue()));
+		//	MapWindow newwindow = new MapWindow(imgnew);
+			
 		}
 	});
 
@@ -287,7 +289,11 @@ private void _displayImgInFrame() {
 	panelmap.add(Zoom, new TableLayoutConstraints(0, 0, 0, 0, TableLayoutConstraints.FULL, TableLayoutConstraints.FULL));
 
 	/**---------------refresh---------------
-	 * 
+	 * firstly, we create a new class named MapWindow to pass the image file to it and display the map.
+	 * However, we cann't fix the problem to load a new map when changing the JSlider.
+	 * Finally, we create a button named refresh. If we change the JSlider, and click the button, the ActionListener
+	 * will invoke startTaskAction() to load a new map. 
+	 * Also, we add frame.dispose() to close the previous window.
 	 */
 	refresh = new JButton("refresh");
 	panelmap.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 20));
@@ -919,7 +925,7 @@ private void initComponents() {
 	private JSlider zoomSlider;
 	private JLabel Zoom;
 	private JButton refresh;
-	
+//	private MapWindow newwindow;  //a new class MapWindow
 	/** Reference
 	 *  http://www.javaswing.org/jspinner.aspx
 	 *  http://www.exampledepot.com/egs/javax.imageio/Graphic2File.html
@@ -938,3 +944,18 @@ private void initComponents() {
 	 */
 	// JFormDesigner - End of variables declaration //GEN-END:variables
 }
+
+/*  
+ // create a new class MapWindow to pass the image file into the class object and display it in the constructor. 
+class MapWindow extends JFrame{
+	JFrame frame = new JFrame("Google Static Map");
+	private BufferedImage img;
+   
+	public MapWindow(BufferedImage imgnew) {
+		img = imgnew; 
+		JLabel imgLbl = new JLabel(new ImageIcon(img));
+		imgLbl.setToolTipText(MessageFormat.format("<html>Image downloaded from URI<br>size: w={0}, h={1}</html>",
+                                          	img.getWidth(), img.getHeight()));
+	}	
+
+}*/
